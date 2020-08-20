@@ -1,25 +1,66 @@
 # Importing  required libraries
 import tkinter as tk
+from english_words import english_words_lower_set
+
+# Generates random word
+word = list(english_words_lower_set)[1]
+hiddenword = ""
+for letter in word:
+    hiddenword += "_ "
+
+print("Random word: " + word)
+print("Random word hidden: " + hiddenword)
+
 
 # Main tkinter application
 class Applicatiion(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
+
+        self.letter = tk.StringVar()
+        self.lifecount = tk.StringVar()
+        self.lifecount = "6"
+
         self.pack()
-        self.create()
+        self.create_info()
+        self.create_word()
+        self.create_lives()
+        self.create_entry()
+    
+    def create_info(self):
+        self.gametext = """The objective of Hangman is simply to find the missing word. You have 6 lives which are reduced for each wrong letter guessed. Start guessing!"""
+        self.infolabel = tk.Label(self, text=self.gametext, wraplength=250)
+        self.infolabel.pack()
 
-    def create(self):
-        self.hello = tk.Button(self)
-        self.hello["text"] = "Hello World\n(Click me)"
-        self.hello["command"] = self.say_hi
-        self.hello.pack(side="top")
+    def create_word(self):
+        self.hiddenword = hiddenword
+        self.wordlabel = tk.Label(self, text=self.hiddenword)
+        self.wordlabel.pack()
 
-        self.quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy)
-        self.quit.pack(side="left")
+    def create_lives(self):
+        self.liveslabel = tk.Label(self, text="Lives: " + self.lifecount)
+        self.liveslabel.pack()
 
-    def say_hi(self):
-        print("Hello0 wworld")
+    def create_entry(self):
+        self.entrylabel = tk.Label(self, text="Enter a letter")
+        self.entrylabel.pack(side="top")
+
+        self.entry = tk.Entry(self, bd=5)
+        self.entry.pack()
+
+        self.entry_btn = tk.Button(self, text="Confirm letter", command=self.get_entry)
+        self.entry_btn.pack(side="bottom")
+
+        #self.quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy)
+        #self.quit.pack(side="left")
+
+    # Retrieves the input from the screen
+    def get_entry(self):
+        self.input = self.entry.get()
+        self.letter = self.input[0]
+        if self.letter.isalpha():
+            print("Random letter screen = " + self.letter)
 
 # Launch window
 root = tk.Tk()
