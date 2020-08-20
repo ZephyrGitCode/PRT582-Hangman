@@ -46,7 +46,8 @@ class Applicatiion(tk.Frame):
         self.entrylabel = tk.Label(self, text="Enter a letter")
         self.entrylabel.pack(side="top")
 
-        self.entry = tk.Entry(self, bd=5)
+        self.entrytext = ""
+        self.entry = tk.Entry(self, text=self.entrytext, bd=5)
         self.entry.pack()
 
         self.entry_btn = tk.Button(self, text="Confirm letter", command=self.get_entry)
@@ -61,6 +62,12 @@ class Applicatiion(tk.Frame):
         self.letter = self.input[0]
         if self.letter.isalpha():
             print("Random letter screen = " + self.letter)
+            if self.letter in word:
+                print("something")
+                    
+            self.entry.delete(0, 'end')
+            
+        
 
 # Launch window
 root = tk.Tk()
