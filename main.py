@@ -1,12 +1,13 @@
 # Importing  required libraries
 import tkinter as tk
-from english_words import english_words_lower_set
+from english_words import english_words_set
 
 # Generates random word
-word = list(english_words_lower_set)[1]
+word = list(english_words_set)[1]
+word = word.upper()
 hiddenword = ""
 for letter in word:
-    hiddenword += "_ "
+    hiddenword += "_"
 
 print("Random word: " + word)
 print("Random word hidden: " + hiddenword)
@@ -21,6 +22,11 @@ class Applicatiion(tk.Frame):
         self.letter = tk.StringVar()
         self.lifecount = tk.StringVar()
         self.lifecount = "6"
+        self.hiddenword = tk.StringVar()
+        self.hiddenword.set(hiddenword)
+        self.rightlist = []
+        self.wronglist = []
+        self.revealedword = ""
 
         self.pack()
         self.create_info()
@@ -34,12 +40,11 @@ class Applicatiion(tk.Frame):
         self.infolabel.pack()
 
     def create_word(self):
-        self.hiddenword = hiddenword
-        self.wordlabel = tk.Label(self, text=self.hiddenword)
+        self.wordlabel = tk.Label(self, textvariable=self.hiddenword)
         self.wordlabel.pack()
 
     def create_lives(self):
-        self.liveslabel = tk.Label(self, text="Lives: " + self.lifecount)
+        self.liveslabel = tk.Label(self, textvariable=self.lifecount)
         self.liveslabel.pack()
 
     def create_entry(self):
@@ -61,10 +66,21 @@ class Applicatiion(tk.Frame):
         self.input = self.entry.get()
         self.letter = self.input[0]
         if self.letter.isalpha():
+            self.letter = self.letter.upper()
             print("Random letter screen = " + self.letter)
-            if self.letter in word:
-                print("something")
-                    
+            if self.letter not in self.rightlist and self.letter not in self.wronglist:
+                if self.letter in word:
+                    self.revealedword = ""
+                    for letter in word:
+                        if self.letter == letter:
+                            self.revealedword+=self.letter
+                        else:
+                            self.revealedword+="_"
+                else:
+                    self.wronglist.append(self.letter)
+                    print(self.wronglist)
+                    self.lifecount = "6"
+                self.hiddenword.set(self.revealedword)
             self.entry.delete(0, 'end')
             
         
