@@ -1,0 +1,6 @@
+{
+    "python.workspaceSymbols.exclusionPatterns": [
+        "**/site-packages/**",
+        "C:\\Users\\zephy\\AppData\\Local\\Programs\\Python\\Python38\\Lib\\site-packages"
+    ]
+}

@@ -5,9 +5,22 @@ from english_words import english_words_set
 # Generates random word
 word = list(english_words_set)[1]
 word = word.upper()
-hiddenword = ""
+spacedword = ""
 for letter in word:
-    hiddenword += "_"
+    spacedword += letter
+    spacedword += " "
+word = spacedword
+
+hiddenword = ""
+wordlist = []
+# Generating list of underscores
+for letter in word:
+    if letter != " ":
+        hiddenword += "_"
+        wordlist.append("_")
+    else:
+        hiddenword += " "
+        wordlist.append(" ")
 
 print("Random word: " + word)
 print("Random word hidden: " + hiddenword)
@@ -68,18 +81,32 @@ class Applicatiion(tk.Frame):
         if self.letter.isalpha():
             self.letter = self.letter.upper()
             print("Random letter screen = " + self.letter)
+            
             if self.letter not in self.rightlist and self.letter not in self.wronglist:
                 if self.letter in word:
-                    self.revealedword = ""
-                    for letter in word:
-                        if self.letter == letter:
-                            self.revealedword+=self.letter
-                        else:
-                            self.revealedword+="_"
+                    self.rightlist.append(self.letter)
+                    
+                    self.revealedword = self.hiddenword.get()
+                    self.revealedwordlist = []
+                    # convert string to list
+                    for letter in self.revealedword:
+                        self.revealedwordlist.append(letter)
+
+                    for i in range(len(word)):
+                        if word[i] == self.letter:
+                            if self.revealedwordlist[i] == " ":
+                                self.revealedwordlist[i+1] = self.letter
+                            else:
+                                self.revealedwordlist[i] = self.letter
                 else:
                     self.wronglist.append(self.letter)
                     print(self.wronglist)
                     self.lifecount = "6"
+                
+                # converts list back to string
+                self.revealedword = ""
+                for letter in self.revealedwordlist:
+                        self.revealedword+=letter
                 self.hiddenword.set(self.revealedword)
             self.entry.delete(0, 'end')
             
