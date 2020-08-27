@@ -25,7 +25,6 @@ for letter in word:
 print("Random word: " + word)
 print("Random word hidden: " + hiddenword)
 
-
 # Main tkinter application
 class Applicatiion(tk.Frame):
     def __init__(self, master=None):
@@ -33,19 +32,23 @@ class Applicatiion(tk.Frame):
         self.master = master
 
         self.letter = tk.StringVar()
+        self.lives = 6
         self.lifecount = tk.StringVar()
-        self.lifecount = "6"
+        self.lifecount.set(str(self.lives))
         self.hiddenword = tk.StringVar()
         self.hiddenword.set(hiddenword)
         self.rightlist = []
+        self.wrongguesses = tk.StringVar()
         self.wronglist = []
         self.revealedword = ""
+        
 
         self.pack()
         self.create_info()
         self.create_word()
         self.create_lives()
         self.create_entry()
+        self.create_guesses()
     
     def create_info(self):
         self.gametext = """The objective of Hangman is simply to find the missing word. You have 6 lives which are reduced for each wrong letter guessed. Start guessing!"""
@@ -59,6 +62,10 @@ class Applicatiion(tk.Frame):
     def create_lives(self):
         self.liveslabel = tk.Label(self, textvariable=self.lifecount)
         self.liveslabel.pack()
+
+    def create_guesses(self):
+        self.guesslabel = tk.Label(self, textvariable=self.wrongguesses)
+        self.guesslabel.pack()
 
     def create_entry(self):
         self.entrylabel = tk.Label(self, text="Enter a letter")
@@ -85,31 +92,49 @@ class Applicatiion(tk.Frame):
             if self.letter not in self.rightlist and self.letter not in self.wronglist:
                 if self.letter in word:
                     self.rightlist.append(self.letter)
-                    
                     self.revealedword = self.hiddenword.get()
                     self.revealedwordlist = []
                     # convert string to list
                     for letter in self.revealedword:
                         self.revealedwordlist.append(letter)
-
-                    for i in range(len(word)):
-                        if word[i] == self.letter:
-                            if self.revealedwordlist[i] == " ":
-                                self.revealedwordlist[i+1] = self.letter
-                            else:
-                                self.revealedwordlist[i] = self.letter
-                else:
-                    self.wronglist.append(self.letter)
-                    print(self.wronglist)
-                    self.lifecount = "6"
-                
-                # converts list back to string
-                self.revealedword = ""
-                for letter in self.revealedwordlist:
+                    # for i in range(0, length of word) if current letter matches self.letter then reveal the letter
+                    for letter in range(len(word)):
+                        if word[letter] == self.letter:
+                            self.revealedwordlist[letter] = self.letter
+                    
+                    # converts list back to string
+                    self.revealedword = ""
+                    for letter in self.revealedwordlist:
                         self.revealedword+=letter
-                self.hiddenword.set(self.revealedword)
+                    # re-prints the revealed word to display
+                    self.hiddenword.set(self.revealedword)
+
+                else:
+                    # Append letter to wrong guesses list then print them to screen
+                    self.wronglist.append(self.letter)
+                    self.wrongstring = "Wrong Guesses: "
+                    for i in range(len(self.wronglist)):
+                        self.wrongstring += self.wronglist[i]
+                        self.wrongstring += " "
+                    self.wrongguesses.set(self.wrongstring)
+                    print(self.wronglist)
+                    self.lives -= 1
+                    if self.lives == 0:
+                        self.hiddenword.set("Defeat")
+                        self.lifecount.set("Defeat")
+                    self.lifecount.set(str(self.lives))
+                
             self.entry.delete(0, 'end')
-            
+
+    """         
+    def create_loss(self):
+        self.guesslabel = tk.Label(self, textvariable=self.wrongguesses)
+        self.guesslabel.pack()
+    
+    def create_win(self):
+        self.guesslabel = tk.Label(self, textvariable=self.wrongguesses)
+        self.guesslabel.pack()
+    """ 
         
 
 # Launch window
