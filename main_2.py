@@ -26,21 +26,34 @@ class Applicatiion(tk.Frame):
 
         self.hiddenword = tk.StringVar()
         self.hiddenword.set(hiddenword)
+        self.guess = tk.StringVar()
 
         self.pack()
         self.create_word()
+        self.create_entry()
 
     def create_word(self):
         self.wordlabel = tk.Label(self, textvariable=self.hiddenword)
         self.wordlabel.pack()
-
-        #self.quit = tk.Button(self, text="QUIT", fg="red", command=self.master.destroy)
-        #self.quit.pack(side="left")
-
     
-    """ def get_entry(self):
-        letter = self.entry.get()
-        print("Random letter screen = " + letter) """
+    def create_entry(self):
+        self.entrylabel = tk.Label(self, text="Enter a letter")
+        self.entrylabel.pack(side="top")
+
+        self.entry = tk.Entry(self, bd=5)
+        self.entry.pack()
+
+        self.guesslabel = tk.Label(self, textvariable = self.guess)
+        self.guesslabel.pack()
+
+        self.entry_btn = tk.Button(self, text="Confirm letter", command=self.get_entry)
+        self.entry_btn.pack(side="bottom")
+        
+    def get_entry(self):
+        self.input = self.entry.get()[0]
+        if self.input.isalpha():
+            self.letter = self.input.upper()
+            self.guess.set(self.letter)
 
 # Launch game window
 root = tk.Tk()
