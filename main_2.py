@@ -50,10 +50,12 @@ class Applicatiion(tk.Frame):
         self.entry_btn.pack(side="bottom")
         
     def get_entry(self):
-        self.input = self.entry.get()[0]
-        if self.input.isalpha():
-            self.letter = self.input.upper()
+        if self.entry.get() and self.entry.get().isalpha():
+            self.letter = self.entry.get()[0].upper()
             self.guess.set(self.letter)
+        else:
+            self.guess.set("You must enter a letter")
+        self.entry.delete(0, 'end')
 
 # Launch game window
 root = tk.Tk()
