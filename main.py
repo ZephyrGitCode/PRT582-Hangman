@@ -109,6 +109,9 @@ class Applicatiion(tk.Frame):
                     # re-prints the revealed word to display
                     self.hiddenword.set(self.revealedword)
 
+                    if "_" not in self.revealedword:
+                        self.hiddenword.set(self.revealedword + " Victory!")
+
                 else:
                     # Append letter to wrong guesses list then print them to screen
                     self.wronglist.append(self.letter)
@@ -117,13 +120,13 @@ class Applicatiion(tk.Frame):
                         self.wrongstring += self.wronglist[i]
                         self.wrongstring += " "
                     self.wrongguesses.set(self.wrongstring)
-                    print(self.wronglist)
+                    # Remove a life
                     self.lives -= 1
                     if self.lives == 0:
                         self.hiddenword.set("Defeat")
                         self.lifecount.set("Defeat")
                     self.lifecount.set(str(self.lives))
-                
+            # Reset entry text
             self.entry.delete(0, 'end')
 
     """         
@@ -137,7 +140,7 @@ class Applicatiion(tk.Frame):
     """ 
         
 
-# Launch window
+# Launch game window
 root = tk.Tk()
 root.title("Hangman Zephyr")
 root.geometry("300x225")
